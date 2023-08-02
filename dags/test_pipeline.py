@@ -9,8 +9,8 @@ import pandas as pd
 import pendulum
 
 
-@aql.dataframe(task_id="python_1")
-def python_1_func():
+@aql.dataframe(task_id="my_dag")
+def my_dag_func():
      import datetime
     
      from airflow import DAG
@@ -22,12 +22,29 @@ def python_1_func():
      )
      EmptyOperator(task_id="task", dag=my_dag)
 
+@aql.dataframe(task_id="python_2")
+def python_2_func():
+    import datetime
+    
+    from airflow.decorators import dag
+    from airflow.operators.empty import EmptyOperator
+    
+    
+    @dag(start_date=datetime.datetime(2021, 1, 1))
+    def generate_dag():
+        EmptyOperator(task_id="task")
+    
+    
+    generate_dag()
+
 @dag(
     schedule="0 0 * * *",
     start_date=pendulum.from_format("2023-08-01", "YYYY-MM-DD").in_tz("UTC"),
     catchup=False,
 )
 def test_pipeline():
-    python_1 = python_1_func()
+    my_dag = my_dag_func()
+
+    python_2 = python_2_func()
 
 dag_obj = test_pipeline()
