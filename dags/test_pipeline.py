@@ -19,6 +19,7 @@ def python_1_func():
     @dag()
     def generate_dag():
         EmptyOperator(task_id="task")
+        print(1)
         throw Exception("exception")
     generate_dag()
 
