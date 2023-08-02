@@ -8,16 +8,18 @@ from astro import sql as aql
 import pandas as pd
 import pendulum
 
- import datetime
- import Exception
-
- from airflow import DAG
- from airflow.operators.empty import EmptyOperator
 
 @aql.dataframe(task_id="python_1")
 def python_1_func():
+     import datetime
+    
+     from airflow import DAG
+     from airflow.operators.empty import EmptyOperator
+    
      my_dag = DAG(
          dag_id="my_dag_name",
+         start_date=datetime.datetime(2021, 1, 1),
+         schedule="@daily",
      )
      EmptyOperator(task_id="task", dag=my_dag)
 
