@@ -16,12 +16,10 @@ import pendulum
 
 @aql.dataframe(task_id="python_1")
 def python_1_func():
-    @dag()
-    def generate_dag():
-        EmptyOperator(task_id="task")
-        print(1)
-        throw Exception("exception")
-    generate_dag()
+     my_dag = DAG(
+         dag_id="my_dag_name",
+     )
+     EmptyOperator(task_id="task", dag=my_dag)
 
 @dag(
     schedule="0 0 * * *",
